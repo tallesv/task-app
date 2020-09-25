@@ -6,12 +6,17 @@ import * as Yup from 'yup';
 import cep from 'cep-promise';
 import { validate } from 'gerador-validador-cpf';
 import { subYears } from 'date-fns';
+import { uuid } from 'uuidv4';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from '../../components/input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import NavBar from '../../components/navBar';
 
 import { Content, Banner, Form } from './style';
+import { addUser } from '../../redux/modules/users/actions';
+import { IUser } from '../../redux/modules/users/types';
+import { IState } from '../../redux/store';
 
 interface IAdress {
   state: string;
@@ -22,6 +27,7 @@ interface IAdress {
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const dispatch = useDispatch();
   const [adressData, setAdressData] = useState<IAdress>({
     state: '',
     city: '',
@@ -32,6 +38,13 @@ const SignUp: React.FC = () => {
   const handleCpfValidation = useCallback((cpf: string) => {
     return validate(cpf);
   }, []);
+
+  const handleAddUser = useCallback(
+    (user: IUser) => {
+      dispatch(addUser(user));
+    },
+    [dispatch],
+  );
 
   const handleSubmit = useCallback(
     async (data: any) => {
@@ -69,6 +82,8 @@ const SignUp: React.FC = () => {
           );
           throw error;
         }
+
+        handleAddUser({ id: uuid(), ...data });
       } catch (err) {
         const errors = getValidationErrors(err);
 
@@ -76,7 +91,7 @@ const SignUp: React.FC = () => {
         console.log(err);
       }
     },
-    [handleCpfValidation],
+    [handleAddUser, handleCpfValidation],
   );
 
   const handleAdress = useCallback(
@@ -105,6 +120,10 @@ const SignUp: React.FC = () => {
     },
     [handleAdress],
   );
+
+  const users = useSelector<IState>(state => state);
+
+  console.log(users);
 
   return (
     <>
