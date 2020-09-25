@@ -1,61 +1,111 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { FormHandles } from '@unform/core';
 import { Form as Unform } from '@unform/web';
 import * as Yup from 'yup';
 import cep from 'cep-promise';
+import { validate } from 'gerador-validador-cpf';
+import { subYears } from 'date-fns';
+import Input from '../../components/input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import NavBar from '../../components/navBar';
 
 import { Content, Banner, Form } from './style';
 
+interface IAdress {
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+}
+
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [street, setStreet] = useState('');
+  const [adressData, setAdressData] = useState<IAdress>({
+    state: '',
+    city: '',
+    neighborhood: '',
+    street: '',
+  });
 
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('Digite um e-mail válido'),
-        date: Yup.date().required('Data de nascimento obrigatória'),
-        cpf: Yup.string(),
-        password: Yup.string().min(6, 'No mínimo 6 digitos'),
-        cep: Yup.string(),
-        state: Yup.string(),
-        city: Yup.string(),
-        neighborhood: Yup.string(),
-        street: Yup.string(),
-        number: Yup.string(),
-      });
-
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-    } catch (err) {
-      const errors = getValidationErrors(err);
-
-      formRef.current?.setErrors(errors);
-      console.log(err);
-    }
+  const handleCpfValidation = useCallback((cpf: string) => {
+    return validate(cpf);
   }, []);
 
-  const handleCep = useCallback((cepData: string) => {
-    if (cepData.length === 8) {
-      cep(cepData).then(response => {
-        setState(response.state);
-        setCity(response.city);
-        setNeighborhood(response.neighborhood);
-        setStreet(response.street);
+  const handleSubmit = useCallback(
+    async (data: any) => {
+      try {
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('Digite um e-mail válido'),
+          date: Yup.date()
+            .max(subYears(new Date(), 12))
+            .required('Data de nascimento obrigatória'),
+          cpf: Yup.string(),
+          password: Yup.string().min(6, 'No mínimo 6 digitos'),
+          cep: Yup.string(),
+          state: Yup.string(),
+          city: Yup.string(),
+          neighborhood: Yup.string(),
+          street: Yup.string(),
+          number: Yup.string(),
+        });
+
+        const cpfValidation = handleCpfValidation(data.cpf);
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        if (!cpfValidation) {
+          const error = new Yup.ValidationError(
+            'cpf invalido',
+            data,
+            'cpf',
+            'cpf',
+          );
+          throw error;
+        }
+      } catch (err) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+        console.log(err);
+      }
+    },
+    [handleCpfValidation],
+  );
+
+  const handleAdress = useCallback(
+    ({ state, city, neighborhood, street }: IAdress) => {
+      setAdressData({
+        state,
+        city,
+        neighborhood,
+        street,
       });
-    }
-  }, []);
+    },
+    [],
+  );
+
+  const handleCep = useCallback(
+    (cepData: string) => {
+      if (cepData.length === 8) {
+        cep(cepData).then(response => {
+          const { state } = response;
+          const { city } = response;
+          const { neighborhood } = response;
+          const { street } = response;
+          handleAdress({ state, city, neighborhood, street });
+        });
+      }
+    },
+    [handleAdress],
+  );
+
   return (
     <>
       <NavBar />
@@ -66,63 +116,65 @@ const SignUp: React.FC = () => {
           </span>
 
           <Form>
-            <Unform className="unform" ref={formRef} onSubmit={handleSubmit}>
+            <Unform
+              className="unform"
+              initialData={adressData}
+              ref={formRef}
+              onSubmit={handleSubmit}
+            >
               <div>
                 <p>Nome</p>
-                <TextField name="name" variant="outlined" />
+                <Input name="name" />
               </div>
 
               <div>
                 <p>Email</p>
-                <TextField variant="outlined" type="email" />
+                <Input name="email" />
               </div>
 
               <div>
                 <p>Data de nascimento</p>
-                <TextField variant="outlined" />
+                <Input name="date" type="date" />
               </div>
 
               <div>
                 <p>CPF</p>
-                <TextField variant="outlined" />
+                <Input name="cpf" />
               </div>
 
               <div>
                 <p>Senha</p>
-                <TextField variant="outlined" type="password" />
+                <Input name="password" type="password" />
               </div>
 
               <div>
                 <p>CEP</p>
-                <TextField
-                  variant="outlined"
-                  onChange={e => handleCep(e.target.value)}
-                />
+                <Input name="cep" onChange={e => handleCep(e.target.value)} />
               </div>
 
               <div>
                 <p>Estado</p>
-                <TextField value={state} variant="outlined" />
+                <Input name="state" />
               </div>
 
               <div>
                 <p>Cidade</p>
-                <TextField value={city} variant="outlined" />
+                <Input name="city" />
               </div>
 
               <div>
                 <p>Bairro</p>
-                <TextField value={neighborhood} variant="outlined" />
+                <Input name="neighborhood" />
               </div>
 
               <div className="endereço">
                 <div>
                   <p>Rua</p>
-                  <TextField value={street} variant="outlined" />
+                  <Input name="street" />
                 </div>
                 <div>
                   <p>Numero</p>
-                  <TextField id="numero" variant="outlined" />
+                  <Input name="number" />
                 </div>
               </div>
               <Button variant="contained" type="submit">

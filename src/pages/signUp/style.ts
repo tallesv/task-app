@@ -25,7 +25,7 @@ export const Form = styled.div`
   height: 600px;
   border-radius: 5px;
 
-  background: #ffff;
+  background: #f0ffff;
 
   .unform {
     display: flex;
@@ -40,13 +40,8 @@ export const Form = styled.div`
 
     background: #ffff;
 
-    input {
-      height: 2px;
-    }
-
     div {
       display: flex;
-      flex-direction: column;
       flex-wrap: wrap;
       margin: 5px 5px;
 
@@ -62,14 +57,6 @@ export const Form = styled.div`
 
       div + div {
         padding-right: 20px;
-      }
-
-      input {
-        width: 300px;
-      }
-
-      #numero {
-        width: 50px;
       }
     }
 
