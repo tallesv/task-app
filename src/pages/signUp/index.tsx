@@ -8,6 +8,7 @@ import { validate } from 'gerador-validador-cpf';
 import { subYears } from 'date-fns';
 import { uuid } from 'uuidv4';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Input from '../../components/input';
 import getValidationErrors from '../../utils/getValidationErrors';
 
@@ -28,6 +29,7 @@ interface IAdress {
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const dispatch = useDispatch();
+  const history = useHistory();
   const [adressData, setAdressData] = useState<IAdress>({
     state: '',
     city: '',
@@ -84,6 +86,7 @@ const SignUp: React.FC = () => {
         }
 
         handleAddUser({ id: uuid(), ...data });
+        history.push('/signup');
       } catch (err) {
         const errors = getValidationErrors(err);
 
@@ -91,7 +94,7 @@ const SignUp: React.FC = () => {
         console.log(err);
       }
     },
-    [handleAddUser, handleCpfValidation],
+    [handleAddUser, handleCpfValidation, history],
   );
 
   const handleAdress = useCallback(
