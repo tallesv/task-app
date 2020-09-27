@@ -16,4 +16,12 @@ export const Content = styled.header`
     background: #05386b;
     color: #edf5e1;
   }
+
+  .user-info {
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;

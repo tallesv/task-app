@@ -86,12 +86,12 @@ const SignUp: React.FC = () => {
         }
 
         handleAddUser({ id: uuid(), ...data });
-        history.push('/signup');
+        history.push('/signin');
       } catch (err) {
         const errors = getValidationErrors(err);
 
         formRef.current?.setErrors(errors);
-        console.log(err);
+        console.log(errors);
       }
     },
     [handleAddUser, handleCpfValidation, history],
@@ -123,10 +123,6 @@ const SignUp: React.FC = () => {
     },
     [handleAdress],
   );
-
-  const users = useSelector<IState>(state => state);
-
-  console.log(users);
 
   return (
     <>

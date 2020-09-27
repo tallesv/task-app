@@ -1,19 +1,29 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useContext } from 'react';
 import { Button } from '@material-ui/core';
 import { FormHandles } from '@unform/core';
 import { Form as Unform } from '@unform/web';
 import * as Yup from 'yup';
 import localStorage from 'redux-persist/lib/storage';
 import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Input from '../../components/input';
 
 import { Container, Form, RedirectToSignUp } from './style';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { IUser } from '../../redux/modules/users/types';
+import { login } from '../../redux/modules/authentication/actions';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const handleSignIn = useCallback(
+    (user: IUser) => {
+      dispatch(login(user));
+    },
+    [dispatch],
+  );
 
   const handleSubmit = useCallback(async (data: any) => {
     try {
@@ -32,8 +42,16 @@ const SignIn: React.FC = () => {
         const userToLogin = users.find(user => user.email === data.email);
 
         if (userToLogin && userToLogin.password === data.password) {
-          console.log('login !!');
+          handleSignIn(userToLogin);
           history.push('/');
+        }
+        if (userToLogin && userToLogin.password !== data.password) {
+          const error = new Yup.ValidationError(
+            'Ccombinação de email e senha incorreto',
+            data,
+            'email',
+          );
+          throw error;
         }
       }
     } catch (err) {
