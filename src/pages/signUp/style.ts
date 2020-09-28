@@ -4,7 +4,7 @@ export const Content = styled.div``;
 
 export const Banner = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   height: 800px;
@@ -13,7 +13,7 @@ export const Banner = styled.div`
 
   background: #5cdb95;
 
-  span {
+  h3 {
     color: #edf5e1;
   }
 `;
@@ -21,9 +21,8 @@ export const Banner = styled.div`
 export const Form = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 1000px;
-  height: 600px;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 50px #555;
 
   background: #f0ffff;
 
@@ -31,10 +30,6 @@ export const Form = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: start;
-    flex-wrap: wrap;
-
-    width: 1000px;
-    height: 600px;
     border-radius: 5px;
     padding: 0px 10px;
 
@@ -45,21 +40,10 @@ export const Form = styled.div`
       flex-direction: column;
       flex-wrap: wrap;
       margin: 5px 5px;
-
-      p {
-        margin: 0 10px;
-        font-weight: 500;
-      }
     }
-    }
-
-    .endereço {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-
-      div + div {
-        padding-right: 20px;
+    .two-inputs {
+        display: flex;
+        flex-direction: row;
       }
     }
 
