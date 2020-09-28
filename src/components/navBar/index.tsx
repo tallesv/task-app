@@ -7,39 +7,23 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Content } from './style';
 import { IUser } from '../../redux/modules/users/types';
-import { logout } from '../../redux/modules/authentication/actions';
+import { useAuth } from '../../hooks/AuthContext';
 
 const NavBar: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { user, userLogout } = useAuth();
   const [isLogged, setIsLogged] = useState(false);
-  const [user, setUser] = useState<IUser | null>();
+  // const [user, setUser] = useState<IUser | null>();
 
   const handleLogout = useCallback(() => {
-    dispatch(logout());
-    setIsLogged(false);
-    setUser(null);
+    userLogout();
     history.push('/signup');
-    history.go(0);
-  }, [dispatch, history]);
+  }, [userLogout]);
 
   useEffect(() => {
-    async function loadUser() {
-      const dataFromLocalStorage = await localStorage.getItem('persist:root');
-      if (dataFromLocalStorage) {
-        const isLoggedFromLocalStorage = JSON.parse(
-          JSON.parse(dataFromLocalStorage).auth,
-        ).isLogged as boolean;
-        if (isLoggedFromLocalStorage) {
-          setIsLogged(isLoggedFromLocalStorage);
-          setUser(
-            JSON.parse(JSON.parse(dataFromLocalStorage).auth).user as IUser,
-          );
-        }
-      }
-    }
-    loadUser();
-  }, [isLogged]);
+    setIsLogged(!!user.id);
+  }, [isLogged, user]);
 
   return (
     <>

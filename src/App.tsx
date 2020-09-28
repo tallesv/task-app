@@ -7,13 +7,17 @@ import GlobalStyle from './styles/global';
 import Routes from './routes';
 import { store, persistor } from './redux/store';
 
+import { AuthProvider } from './hooks/AuthContext';
+
 const App: React.FC = () => (
   <>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </AuthProvider>
       </PersistGate>
     </Provider>
     <GlobalStyle />

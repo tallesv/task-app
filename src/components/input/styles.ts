@@ -11,9 +11,11 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   background: #ffff;
   border-radius: 10px;
-  border: 2px solid;
+  border: 1px solid;
   padding: 5px;
   width: 100%;
+  max-width: 300px;
+  max-height: 30px;
 
   display: flex;
   flex-direction: row;

@@ -141,8 +141,10 @@ const SignUp: React.FC = () => {
               onSubmit={handleSubmit}
             >
               <div>
-                <p>Nome</p>
-                <Input name="name" />
+                <div>
+                  <p>Nome</p>
+                  <Input name="name" className="normal-input" />
+                </div>
               </div>
 
               <div>

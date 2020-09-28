@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import Input from '../../components/input';
 
 import { Container, Form, RedirectToSignUp } from './style';
+import { useAuth } from '../../hooks/AuthContext';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { IUser } from '../../redux/modules/users/types';
 import { login } from '../../redux/modules/authentication/actions';
@@ -17,50 +18,42 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const dispatch = useDispatch();
+  const { user, tasks, signIn } = useAuth();
 
-  const handleSignIn = useCallback(
-    (user: IUser) => {
-      dispatch(login(user));
-    },
-    [dispatch],
-  );
+  const handleSubmit = useCallback(
+    async (data: any) => {
+      try {
+        const schema = Yup.object().shape({
+          email: Yup.string().email(),
+          password: Yup.string(),
+        });
 
-  const handleSubmit = useCallback(async (data: any) => {
-    try {
-      const schema = Yup.object().shape({
-        email: Yup.string().email(),
-        password: Yup.string(),
-      });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-      const dataFromLocalStorage = await localStorage.getItem('persist:root');
-      if (dataFromLocalStorage) {
-        const users = JSON.parse(JSON.parse(dataFromLocalStorage).users)
-          .users as IUser[];
-        const userToLogin = users.find(user => user.email === data.email);
-
-        if (userToLogin && userToLogin.password === data.password) {
-          handleSignIn(userToLogin);
-          history.push('/');
-        }
-        if (userToLogin && userToLogin.password !== data.password) {
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+        if (response && response === 'error') {
           const error = new Yup.ValidationError(
-            'Ccombinação de email e senha incorreto',
+            'Combinação de email e senha incorreto',
             data,
             'email',
           );
           throw error;
         }
-      }
-    } catch (err) {
-      const errors = getValidationErrors(err);
+        history.push('/');
+      } catch (err) {
+        const errors = getValidationErrors(err);
 
-      formRef.current?.setErrors(errors);
-      console.log(err);
-    }
-  }, []);
+        formRef.current?.setErrors(errors);
+        console.log(err);
+      }
+    },
+    [history, signIn],
+  );
 
   return (
     <Container>

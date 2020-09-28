@@ -24,4 +24,21 @@ export const AddTask = styled.div`
 
 export const Tasks = styled.div`
   margin: 50px;
+
+  .tasks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px;
+    height: 80px;
+    border: 3px solid;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+
+    div {
+      margin: 0 10px;
+    }
+  }
 `;

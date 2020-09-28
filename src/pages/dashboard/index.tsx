@@ -3,7 +3,13 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import MaterialTable from 'material-table';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import localStorage from 'redux-persist/lib/storage';
@@ -106,7 +112,7 @@ const Dashboard: React.FC = () => {
       <Container>
         <AddTask>
           <Unform ref={formRef} className="unform" onSubmit={handleSubmitTask}>
-            <div className="task">
+            <div className="task-input">
               <p>Tarefa</p>
               <Input name="name" placeholder="Digite a sua tarefa" />
             </div>
@@ -127,56 +133,48 @@ const Dashboard: React.FC = () => {
         </AddTask>
 
         <Tasks>
-          <MaterialTable
-            title="Tarefas"
-            columns={[
-              { title: 'Tarefa', field: 'name' },
-              { title: 'Data de entrega', field: 'deliveryDate', type: 'date' },
-              {
-                title: 'Data de de conclusão',
-                field: 'conclusionDate',
-                type: 'date',
-              },
-            ]}
-            data={tasks.map(task => ({
-              id: task.id,
-              name: task.name,
-              deliveryDate: task.deliveryDate,
-              conclusionDate: task.conclusionDate,
-            }))}
-            actions={[
-              () => ({
-                icon: () => <DoneIcon style={{ color: '#7FFF00' }} />,
-                tooltip: 'Finalizar tarefa',
-                onClick: (event, rowData) => {
-                  if (!Array.isArray(rowData)) {
-                    dispatch(finishTask(rowData, user.id));
-                  }
-                },
-              }),
-              () => ({
-                icon: () => <DeleteIcon style={{ color: '#c53126' }} />,
-                tooltip: 'Deletar tarefa',
-                onClick: (event, rowData) => {
-                  if (!Array.isArray(rowData)) {
-                    handleDeleteTask(rowData, user.id);
-                  }
-                },
-              }),
-            ]}
-            detailPanel={[
-              {
-                icon: () => <VisibilityIcon style={{ color: '#05386b' }} />,
-                tooltip: 'Visualizar tarefa',
-                render: rowData => {
-                  return <div>informações da tarefa</div>;
-                },
-              },
-            ]}
-            options={{
-              actionsColumnIndex: -1,
-            }}
-          />
+          {tasks.map(task => (
+            <div className="tasks">
+              <div>
+                <h3>Tarefa:</h3>
+                <span>{task.name}</span>
+              </div>
+              <div>
+                <h3>Data de entrega:</h3>
+                <span>{task.deliveryDate}</span>
+              </div>
+              {task.conclusionDate && (
+                <div>
+                  <h3>Data de conclusão:</h3>
+                  <span>{task.conclusionDate}</span>
+                </div>
+              )}
+              <Button
+                variant="contained"
+                type="button"
+                style={{ background: 'blue' }}
+              >
+                Visualizar
+              </Button>
+
+              <Button
+                variant="contained"
+                type="button"
+                style={{ background: 'green' }}
+              >
+                Finalizar
+              </Button>
+
+              <Button
+                variant="contained"
+                type="button"
+                style={{ background: 'red' }}
+                onClick={() => handleDeleteTask(task, user.id)}
+              >
+                Deletar
+              </Button>
+            </div>
+          ))}
         </Tasks>
       </Container>
     </>

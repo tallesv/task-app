@@ -30,7 +30,7 @@ export const Form = styled.div`
   .unform {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     flex-wrap: wrap;
 
     width: 1000px;
@@ -42,12 +42,15 @@ export const Form = styled.div`
 
     div {
       display: flex;
+      flex-direction: column;
       flex-wrap: wrap;
       margin: 5px 5px;
 
       p {
-        margin: 0 13px;
+        margin: 0 10px;
+        font-weight: 500;
       }
+    }
     }
 
     .endereço {

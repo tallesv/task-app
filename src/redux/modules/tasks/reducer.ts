@@ -70,7 +70,6 @@ const tasks: Reducer<ITaskState> = (state = INITIAL_STATE, action) => {
         const todayDate = `${today.getFullYear()}-${
           today.getMonth() + 1
         }-${today.getDate()}`;
-        taskToFinish.conclusionDate = todayDate;
 
         console.log(taskToFinish);
         draft.allTasks.map(userTask =>
