@@ -36,10 +36,14 @@ export const Tasks = styled.div`
     align-items: center;
     width: 800px;
     height: 80px;
-    border: 3px solid;
+    border: 3px solid #379683;
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
+
+    h3 {
+      color: #5cdb95;
+    }
 
     div {
       margin: 0 10px;

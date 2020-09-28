@@ -1,7 +1,7 @@
 export interface ITask {
   id: string;
   name: string;
-  deliveryDate: Date;
+  deliveryDate: string;
   conclusionDate?: string;
   isFinished: boolean;
 }
