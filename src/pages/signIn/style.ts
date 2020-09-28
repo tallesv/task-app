@@ -8,8 +8,9 @@ export const Container = styled.div`
   h1 {
     text-align: center;
     font-size: 24px;
-    font-weight: 300;
+    font-weight: 600;
     margin: 10px;
+    color: #5cdb95;
   }
 `;
 
@@ -18,37 +19,45 @@ export const Form = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 300px;
-  height: 300px;
+  width: 600px;
+  height: 280px;
   margin-top: 16px;
-  border: 1px solid #5cdb95;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 10px #555;
   padding-top: 10px;
 
-  div {
-    padding: 10px 10px;
-    p {
-      margin: 5px 5px;
-    }
-  }
-
-  .signin-button {
+  .unform {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    button {
-      background: #05386b;
-      color: #edf5e1;
+    justify-content: start;
+    border-radius: 5px;
+    padding: 0px 10px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      margin: 5px 5px;
+    }
+
+    .signin-button {
+      display: flex;
+      flex-direction: column;
+      margin: 20px 20px;
+      button {
+        background: #05386b;
+        color: #edf5e1;
+      }
     }
   }
 `;
 
 export const RedirectToSignUp = styled.div`
-  width: 300px;
+  width: 600px;
   height: 50px;
-  margin-top: 16px;
-  border: 1px solid #5cdb95;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 10px 10px #555;
+  margin-top: 30px;
 
   display: flex;
   flex-direction: column;

@@ -6,7 +6,6 @@ export const Banner = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   height: 800px;
 
   padding: 100px 200px;
@@ -15,6 +14,7 @@ export const Banner = styled.div`
 
   h3 {
     color: #edf5e1;
+    margin-left: 200px;
   }
 `;
 

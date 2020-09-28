@@ -85,14 +85,12 @@ const SignUp: React.FC = () => {
         street,
         number,
       };
-
       await schema.validate(data, {
         abortEarly: false,
       });
 
       const cpfValidation = handleCpfValidation(data.cpf);
 
-      console.log(cpfValidation);
       if (!cpfValidation) {
         const error = new Yup.ValidationError(
           'CPF invalido',
@@ -111,7 +109,6 @@ const SignUp: React.FC = () => {
 
         formRef.current?.setErrors(errors);
 
-        console.log(err);
         err.errors.map(error =>
           addToast({
             type: 'error',

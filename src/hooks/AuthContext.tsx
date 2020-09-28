@@ -57,6 +57,11 @@ export const AuthProvider: React.FC = ({ children }) => {
           dispatch(login(userToLogin));
           setUser(userToLogin);
         }
+
+        if (!userToLogin) {
+          return 'error';
+        }
+
         if (userToLogin && userToLogin.password !== password) {
           return 'error';
         }
