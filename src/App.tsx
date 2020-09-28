@@ -8,15 +8,18 @@ import Routes from './routes';
 import { store, persistor } from './redux/store';
 
 import { AuthProvider } from './hooks/AuthContext';
+import { ToastProvider } from './hooks/ToastContext';
 
 const App: React.FC = () => (
   <>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
+          <ToastProvider>
+            <BrowserRouter>
+              <Routes />
+            </BrowserRouter>
+          </ToastProvider>
         </AuthProvider>
       </PersistGate>
     </Provider>

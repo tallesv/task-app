@@ -10,6 +10,7 @@ import Input from '../../components/input';
 
 import { Container, Form, RedirectToSignUp } from './style';
 import { useAuth } from '../../hooks/AuthContext';
+import { useToast } from '../../hooks/ToastContext';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { IUser } from '../../redux/modules/users/types';
 import { login } from '../../redux/modules/authentication/actions';
@@ -19,6 +20,7 @@ const SignIn: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user, tasks, signIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: any) => {
@@ -32,27 +34,20 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        const response = await signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
-        if (response && response === 'error') {
-          const error = new Yup.ValidationError(
-            'Combinação de email e senha incorreto',
-            data,
-            'email',
-          );
-          throw error;
-        }
         history.push('/');
       } catch (err) {
-        const errors = getValidationErrors(err);
-
-        formRef.current?.setErrors(errors);
-        console.log(err);
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as cedenciais.',
+        });
       }
     },
-    [history, signIn],
+    [addToast, history, signIn],
   );
 
   return (

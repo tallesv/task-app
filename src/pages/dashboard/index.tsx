@@ -31,12 +31,14 @@ import {
 } from '../../redux/modules/tasks/actions';
 import { ITask, IUserTasks } from '../../redux/modules/tasks/types';
 import { useAuth } from '../../hooks/AuthContext';
+import { useToast } from '../../hooks/ToastContext';
 
 const Dashboard: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const { addToast } = useToast();
   const [tasks, setTasks] = useState<ITask[]>([]);
 
   const loadTasks = useCallback(async () => {
@@ -100,7 +102,7 @@ const Dashboard: React.FC = () => {
         formRef.current?.setErrors(errors);
       }
     },
-    [dispatch, history, user.id],
+    [addToast, dispatch, history, user.id],
   );
 
   useEffect(() => {
@@ -151,13 +153,6 @@ const Dashboard: React.FC = () => {
                   <span>{task.conclusionDate}</span>
                 </div>
               )}
-              <Button
-                variant="contained"
-                type="button"
-                style={{ background: 'blue' }}
-              >
-                Visualizar
-              </Button>
 
               {!task.isFinished && (
                 <Button
@@ -166,7 +161,7 @@ const Dashboard: React.FC = () => {
                   style={{ background: 'green' }}
                   onClick={() => handleFinishTask(task, user.id)}
                 >
-                  Finalizar
+                  Concluir
                 </Button>
               )}
 
