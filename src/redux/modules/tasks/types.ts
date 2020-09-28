@@ -2,7 +2,8 @@ export interface ITask {
   id: string;
   name: string;
   deliveryDate: Date;
-  conclusionDate?: Date;
+  conclusionDate?: string;
+  isFinished: boolean;
 }
 
 export interface IUserTasks {

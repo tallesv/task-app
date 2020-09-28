@@ -1,7 +1,5 @@
 import { Reducer } from 'redux';
 import produce from 'immer';
-import { ContactlessOutlined } from '@material-ui/icons';
-import moment from 'moment';
 import { ITask, ITaskState } from './types';
 
 const INITIAL_STATE: ITaskState = {
@@ -52,7 +50,6 @@ const tasks: Reducer<ITaskState> = (state = INITIAL_STATE, action) => {
         const taskIndex = user?.tasks.findIndex(
           task => task.id === taskToDelete.id,
         );
-
         if (taskIndex) {
           draft.allTasks.map(userTask =>
             userTask.userId === userId
@@ -71,14 +68,24 @@ const tasks: Reducer<ITaskState> = (state = INITIAL_STATE, action) => {
           today.getMonth() + 1
         }-${today.getDate()}`;
 
-        console.log(taskToFinish);
-        draft.allTasks.map(userTask =>
-          userTask.userId === userId
-            ? userTask.tasks.map(task =>
-                task.id === taskToFinish.id ? taskToFinish : task,
-              )
-            : userTask,
+        const user = state.allTasks.find(
+          userTask => userTask.userId === userId,
         );
+
+        const userIndex = state.allTasks.findIndex(
+          userTask => userTask.userId === userId,
+        );
+
+        const taskIndex = user?.tasks.findIndex(
+          task => task.id === taskToFinish.id,
+        );
+
+        if (taskIndex) {
+          taskToFinish.conclusionDate = todayDate;
+          taskToFinish.isFinished = true;
+          const newTask = taskToFinish;
+          draft.allTasks[userIndex].tasks[taskIndex] = newTask;
+        }
 
         console.log(state.allTasks);
 

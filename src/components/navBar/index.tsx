@@ -18,8 +18,8 @@ const NavBar: React.FC = () => {
 
   const handleLogout = useCallback(() => {
     userLogout();
-    history.push('/signup');
-  }, [userLogout]);
+    history.go(0);
+  }, [history, userLogout]);
 
   useEffect(() => {
     setIsLogged(!!user.id);

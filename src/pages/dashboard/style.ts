@@ -23,6 +23,10 @@ export const AddTask = styled.div`
 `;
 
 export const Tasks = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-space-between;
+  flex-wrap: wrap;
   margin: 50px;
 
   .tasks {

@@ -43,21 +43,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
-  async function loadTasks() {
-    const dataFromLocalStorage = await localStorage.getItem('persist:root');
-    if (dataFromLocalStorage) {
-      const tasksFromLocalStorage = JSON.parse(
-        JSON.parse(dataFromLocalStorage).tasks,
-      ).allTasks as IUserTasks[];
-      const tasksFromUser = tasksFromLocalStorage.find(
-        task => task.userId === user.id,
-      );
-      if (tasksFromUser) {
-        setTasks(tasksFromUser.tasks);
-      }
-    }
-  }
-
   const signIn = useCallback(
     async ({ email, password }) => {
       const dataFromLocalStorage = await localStorage.getItem('persist:root');
@@ -85,9 +70,25 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    async function loadTasks() {
+      const dataFromLocalStorage = await localStorage.getItem('persist:root');
+      if (dataFromLocalStorage) {
+        const tasksFromLocalStorage = JSON.parse(
+          JSON.parse(dataFromLocalStorage).tasks,
+        ).allTasks as IUserTasks[];
+        const tasksFromUser = tasksFromLocalStorage.find(
+          task => task.userId === user.id,
+        );
+
+        console.log(user.id);
+        if (tasksFromUser) {
+          setTasks(tasksFromUser.tasks);
+        }
+      }
+    }
     loadUser();
     loadTasks();
-  }, []);
+  }, [user.id]);
 
   return (
     <AuthContext.Provider value={{ user, tasks, signIn, userLogout }}>

@@ -30,23 +30,14 @@ import {
   finishTask,
 } from '../../redux/modules/tasks/actions';
 import { ITask, IUserTasks } from '../../redux/modules/tasks/types';
+import { useAuth } from '../../hooks/AuthContext';
 
 const Dashboard: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [user, setUser] = useState<IUser>({} as IUser);
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<ITask[]>([]);
-
-  const loadUser = useCallback(async () => {
-    const dataFromLocalStorage = await localStorage.getItem('persist:root');
-    if (dataFromLocalStorage) {
-      const userFromlocalStorage = JSON.parse(
-        JSON.parse(dataFromLocalStorage).auth,
-      ).user as IUser;
-      setUser(userFromlocalStorage);
-    }
-  }, []);
 
   const loadTasks = useCallback(async () => {
     const dataFromLocalStorage = await localStorage.getItem('persist:root');
@@ -63,6 +54,15 @@ const Dashboard: React.FC = () => {
     }
     console.log('veio');
   }, [user.id]);
+
+  const handleFinishTask = useCallback(
+    async (task: ITask, userId: string) => {
+      dispatch(finishTask(task, userId));
+      await loadTasks();
+      history.go(0);
+    },
+    [dispatch, history, loadTasks],
+  );
 
   const handleDeleteTask = useCallback(
     async (task: ITask, userId: string) => {
@@ -83,27 +83,29 @@ const Dashboard: React.FC = () => {
           ),
           conclusionDate: Yup.string(),
         });
-
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        dispatch(addTask({ id: uuid(), ...data }, user.id));
+        dispatch(
+          addTask(
+            { id: uuid(), ...data, isFinished: !(data.conclusionDate === '') },
+            user.id,
+          ),
+        );
         history.go(0);
       } catch (err) {
         const errors = getValidationErrors(err);
 
         formRef.current?.setErrors(errors);
-        console.log(errors);
       }
     },
     [dispatch, history, user.id],
   );
 
   useEffect(() => {
-    loadUser();
     loadTasks();
-  }, [loadTasks, loadUser]);
+  }, [loadTasks]);
 
   return (
     <>
@@ -157,13 +159,16 @@ const Dashboard: React.FC = () => {
                 Visualizar
               </Button>
 
-              <Button
-                variant="contained"
-                type="button"
-                style={{ background: 'green' }}
-              >
-                Finalizar
-              </Button>
+              {!task.isFinished && (
+                <Button
+                  variant="contained"
+                  type="button"
+                  style={{ background: 'green' }}
+                  onClick={() => handleFinishTask(task, user.id)}
+                >
+                  Finalizar
+                </Button>
+              )}
 
               <Button
                 variant="contained"
