@@ -60,7 +60,10 @@ const SignUp: React.FC = () => {
           .required('E-mail obrigatório')
           .email('Digite um e-mail válido'),
         date: Yup.date()
-          .max(subYears(new Date(), 12))
+          .max(
+            subYears(new Date(), 12),
+            'Você tem que ter mais de 12 anos para se cadastrar',
+          )
           .required('Data de nascimento obrigatória'),
         cpf: Yup.string(),
         password: Yup.string().min(6, 'Senha tem que ter no mínimo 6 digitos'),
