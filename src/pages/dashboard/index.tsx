@@ -57,7 +57,6 @@ const Dashboard: React.FC = () => {
         setTasks(tasksFromUser.tasks);
       }
     }
-    console.log('veio');
   }, [user.id]);
 
   const handleFinishTask = useCallback(
@@ -129,7 +128,6 @@ const Dashboard: React.FC = () => {
       );
       history.go(0);
     } catch (err) {
-      console.log(err);
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
 

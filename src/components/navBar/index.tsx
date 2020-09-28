@@ -32,7 +32,7 @@ const NavBar: React.FC = () => {
 
         {isLogged && user ? (
           <div className="user-info">
-            <span>{user.name}</span>
+            <h3>{user.name}</h3>
             <Button variant="contained" onClick={handleLogout}>
               Sair
             </Button>

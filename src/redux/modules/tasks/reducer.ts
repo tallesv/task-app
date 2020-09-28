@@ -50,7 +50,7 @@ const tasks: Reducer<ITaskState> = (state = INITIAL_STATE, action) => {
         const taskIndex = user?.tasks.findIndex(
           task => task.id === taskToDelete.id,
         );
-        if (taskIndex) {
+        if (taskIndex || taskIndex === 0) {
           draft.allTasks.map(userTask =>
             userTask.userId === userId
               ? userTask.tasks.splice(taskIndex, 1)
@@ -79,15 +79,12 @@ const tasks: Reducer<ITaskState> = (state = INITIAL_STATE, action) => {
         const taskIndex = user?.tasks.findIndex(
           task => task.id === taskToFinish.id,
         );
-
-        if (taskIndex) {
+        if (taskIndex || taskIndex === 0) {
           taskToFinish.conclusionDate = todayDate;
           taskToFinish.isFinished = true;
           const newTask = taskToFinish;
           draft.allTasks[userIndex].tasks[taskIndex] = newTask;
         }
-
-        console.log(state.allTasks);
 
         break;
       }

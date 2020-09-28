@@ -85,7 +85,6 @@ export const AuthProvider: React.FC = ({ children }) => {
           task => task.userId === user.id,
         );
 
-        console.log(user.id);
         if (tasksFromUser) {
           setTasks(tasksFromUser.tasks);
         }
