@@ -156,6 +156,7 @@ const Dashboard: React.FC = () => {
                 placeholder="Digite a descrição da sua tarefa"
                 onChange={e => setTaskToSubmit(e.target.value)}
                 variant="outlined"
+                helperText="Campo obrigatório"
               />
             </div>
             <div>
@@ -164,6 +165,7 @@ const Dashboard: React.FC = () => {
                 label="Data de entrega"
                 type="date"
                 onChange={e => setDeliveryDate(new Date(e.target.value))}
+                helperText="Campo obrigatório"
                 InputLabelProps={{
                   shrink: true,
                 }}

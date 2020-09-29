@@ -162,6 +162,7 @@ const SignUp: React.FC = () => {
                   label="Nome"
                   onChange={e => setName(e.target.value)}
                   variant="outlined"
+                  helperText="Campo obrigatório"
                 />
               </div>
 
@@ -171,6 +172,7 @@ const SignUp: React.FC = () => {
                   type="email"
                   onChange={e => setEmail(e.target.value)}
                   variant="outlined"
+                  helperText="Campo obrigatório"
                 />
               </div>
 
@@ -180,6 +182,7 @@ const SignUp: React.FC = () => {
                   label="Data de nascimento"
                   type="date"
                   onChange={e => handleDateChange(new Date(e.target.value))}
+                  helperText="Campo obrigatório"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -188,6 +191,7 @@ const SignUp: React.FC = () => {
                   label="CPF"
                   onChange={e => setCpf(e.target.value)}
                   variant="outlined"
+                  helperText="Campo obrigatório"
                 />
               </div>
 
@@ -196,6 +200,7 @@ const SignUp: React.FC = () => {
                   label="Senha"
                   type="password"
                   onChange={e => setPassword(e.target.value)}
+                  helperText="Campo obrigatório"
                   variant="outlined"
                 />
               </div>

@@ -6,7 +6,6 @@ export const Banner = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 800px;
 
   padding: 100px 200px;
 
@@ -23,7 +22,6 @@ export const Form = styled.div`
   flex-wrap: wrap;
   border-radius: 10px;
   box-shadow: 0px 10px 50px #555;
-
   background: #f0ffff;
 
   .unform {

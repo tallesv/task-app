@@ -58,6 +58,7 @@ const SignIn: React.FC = () => {
         <Unform className="unform" onSubmit={handleSubmit}>
           <div>
             <TextField
+              id="email-input"
               label="Email"
               type="email"
               onChange={e => setEmail(e.target.value)}
@@ -67,6 +68,7 @@ const SignIn: React.FC = () => {
 
           <div>
             <TextField
+              id="senha-input"
               label="Senha"
               type="password"
               onChange={e => setPassword(e.target.value)}
