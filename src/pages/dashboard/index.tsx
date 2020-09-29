@@ -1,29 +1,16 @@
 import { Button, TextField } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DoneIcon from '@material-ui/icons/Done';
-import MaterialTable from 'material-table';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import localStorage from 'redux-persist/lib/storage';
 import { FormHandles } from '@unform/core';
 import { Form as Unform } from '@unform/web';
-import { format } from 'date-fns';
-import { empty, uuid } from 'uuidv4';
+import { uuid } from 'uuidv4';
 import { useHistory } from 'react-router-dom';
 import getValidationErrors from '../../utils/getValidationErrors';
 import NavBar from '../../components/navBar';
 
 import { Container, AddTask, Tasks } from './style';
-import { IUser } from '../../redux/modules/users/types';
-import Input from '../../components/input';
 import {
   addTask,
   deleteTask,

@@ -1,17 +1,13 @@
-import React, { useRef, useCallback, useContext, useState } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { FormHandles } from '@unform/core';
 import { Form as Unform } from '@unform/web';
 import * as Yup from 'yup';
-import localStorage from 'redux-persist/lib/storage';
 import { Link, useHistory } from 'react-router-dom';
 
 import { Container, Form, RedirectToSignUp } from './style';
 import { useAuth } from '../../hooks/AuthContext';
 import { useToast } from '../../hooks/ToastContext';
-import getValidationErrors from '../../utils/getValidationErrors';
-import { IUser } from '../../redux/modules/users/types';
-import { login } from '../../redux/modules/authentication/actions';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);

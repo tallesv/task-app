@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import localStorage from 'redux-persist/lib/storage';
 import { Button } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Content } from './style';
-import { IUser } from '../../redux/modules/users/types';
 import { useAuth } from '../../hooks/AuthContext';
 
 const NavBar: React.FC = () => {
@@ -14,7 +12,6 @@ const NavBar: React.FC = () => {
   const dispatch = useDispatch();
   const { user, userLogout } = useAuth();
   const [isLogged, setIsLogged] = useState(false);
-  // const [user, setUser] = useState<IUser | null>();
 
   const handleLogout = useCallback(() => {
     userLogout();

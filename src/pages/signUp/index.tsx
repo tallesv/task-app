@@ -17,7 +17,6 @@ import NavBar from '../../components/navBar';
 import { Content, Banner, Form } from './style';
 import { addUser } from '../../redux/modules/users/actions';
 import { IUser } from '../../redux/modules/users/types';
-import { IState } from '../../redux/store';
 import { useToast } from '../../hooks/ToastContext';
 
 const SignUp: React.FC = () => {
@@ -123,6 +122,7 @@ const SignUp: React.FC = () => {
     }
   }, [
     CEP,
+    addToast,
     city,
     cpf,
     dateBirth,
