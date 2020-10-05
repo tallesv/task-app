@@ -38,6 +38,10 @@ export const Form = styled.div`
       flex-direction: column;
       flex-wrap: wrap;
       margin: 5px 5px;
+
+      input {
+        width: 92%;
+      }
     }
 
     .signin-button {
